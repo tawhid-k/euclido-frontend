@@ -1,0 +1,5 @@
+export const gradientText = "text-transparent bg-clip-text bg-gradient-to-r from-[#00406B] via-[#036694] to-[#007DD1]"
+export const gradientCards = "bg-gradient-to-r from-[#00406B] via-[#036694] via-60% to-[#017195]"
+export const shadow = "shadow-[rgba(17,_17,_26,_0.1)_0px_0px_16px]"
+export const andline = "h-4 w-0.5 bg-african-violet rotate-[30deg]"
+export const badgeStyle = "bg-badge text-foreground text-xs font-medium p-2 rounded-lg"

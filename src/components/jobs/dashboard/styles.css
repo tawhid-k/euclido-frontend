@@ -1,0 +1,393 @@
+.editor-container {
+  margin: 20px auto;
+  border-radius: 2px;
+  max-width: 800px;
+  color: #000;
+  position: relative;
+  line-height: 20px;
+  font-weight: 400;
+  text-align: left;
+  border-radius: 10px;
+  background: #fff;
+}
+
+.editor-inner {
+  background: #fff;
+  position: relative;
+  border-radius: 30px;
+  border-width: 1px;
+  border-color: #F0F0F0;
+}
+
+.editor-input {
+  min-height: 150px;
+  resize: none;
+  font-size: 15px;
+  caret-color: rgb(5, 5, 5);
+  position: relative;
+  tab-size: 1;
+  outline: 0;
+  padding: 15px 10px;
+  caret-color: #444;
+}
+
+.editor-placeholder {
+  color: #999;
+  overflow: hidden;
+  position: absolute;
+  text-overflow: ellipsis;
+  top: 15px;
+  left: 10px;
+  font-size: 15px;
+  user-select: none;
+  display: inline-block;
+  pointer-events: none;
+}
+
+.editor-paragraph {
+  margin: 0;
+  margin-bottom: 8px;
+  position: relative;
+}
+
+.toolbar {
+  display: flex;
+  margin-bottom: 1px;
+  background: #FBFBFB;
+  padding: 8px;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+  overflow-x: auto;
+}
+
+.toolbar-button {
+  border: 0;
+  display: flex;
+  background: none;
+  border-radius: 4px;
+  padding: 8px;
+  cursor: pointer;
+  vertical-align: middle;
+  font-size: 14px;
+  margin-right: 2px;
+  color: #555;
+  font-weight: 500;
+}
+
+.toolbar-button:hover {
+  background-color: #e8e8e8;
+}
+
+.toolbar-button.active {
+  background-color: #ddd;
+  color: #000;
+}
+
+.toolbar-divider {
+  width: 1px;
+  background-color: #ddd;
+  margin: 0 8px;
+}
+
+.editor-text-bold {
+  font-weight: bold;
+}
+
+.editor-text-italic {
+  font-style: italic;
+}
+
+.editor-text-underline {
+  text-decoration: underline;
+}
+
+
+
+
+.editor-heading-h1 {
+  font-size: 24px;
+  font-weight: bold;
+  margin: 0;
+  margin-bottom: 12px;
+  padding: 0;
+}
+
+.editor-heading-h2 {
+  font-size: 20px;
+  font-weight: bold;
+  margin: 0;
+  margin-bottom: 10px;
+  padding: 0;
+}
+
+.editor-heading-h3 {
+  font-size: 16px;
+  font-weight: bold;
+  margin: 0;
+  margin-bottom: 8px;
+  padding: 0;
+}
+
+.editor-quote {
+  margin: 0;
+  margin-left: 20px;
+  margin-bottom: 10px;
+  font-size: 15px;
+  color: rgb(101, 103, 107);
+  border-left-color: rgb(206, 208, 212);
+  border-left-width: 4px;
+  border-left-style: solid;
+  padding-left: 16px;
+}
+
+.editor-list-ol {
+  padding: 0;
+  margin: 0;
+  margin-left: 16px;
+}
+
+.editor-list-ul {
+  padding: 0;
+  margin: 0;
+  margin-left: 16px;
+}
+
+.editor-listitem {
+  margin: 8px 32px 8px 32px;
+}
+
+.editor-nested-listitem {
+  list-style-type: none;
+}
+
+.editor-checklist {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding-left: 20px;
+}
+
+.editor-table {
+  border-collapse: collapse;
+  border-spacing: 0;
+  overflow-y: scroll;
+  overflow-x: scroll;
+  table-layout: fixed;
+  width: 100%;
+  margin: 8px 0;
+}
+
+.editor-tableCell {
+  border: 1px solid #ccc;
+  min-width: 75px;
+  vertical-align: top;
+  text-align: start;
+  padding: 6px 8px;
+  position: relative;
+  cursor: default;
+  outline: none;
+}
+
+.editor-tableRow {
+  border: 1px solid #ccc;
+  min-height: 35px;
+}
+
+.editor-tableCellHeader {
+  background-color: #f2f3f5;
+  text-align: start;
+}
+
+.link-editor {
+  position: absolute;
+  z-index: 10;
+  top: -10000px;
+  left: -10000px;
+  margin-top: -6px;
+  max-width: 300px;
+  width: 100%;
+  opacity: 0;
+  background-color: #fff;
+  box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.3);
+  border-radius: 0 0 8px 8px;
+  transition: opacity 0.5s;
+}
+
+.link-editor .link-input {
+  display: block;
+  width: calc(100% - 24px);
+  box-sizing: border-box;
+  margin: 8px 12px;
+  padding: 8px 12px;
+  border-radius: 4px;
+  background-color: #eee;
+  font-size: 15px;
+  color: rgb(5, 5, 5);
+  border: 0;
+  outline: 0;
+  position: relative;
+  font-family: inherit;
+}
+
+.link-editor div.link-edit {
+  background-size: 16px;
+  background-position: center;
+  background-repeat: no-repeat;
+  width: 35px;
+  vertical-align: -0.25em;
+  position: absolute;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  cursor: pointer;
+}
+
+.link-editor .link-input a {
+  color: rgb(33, 111, 219);
+  text-decoration: underline;
+  white-space: nowrap;
+  overflow: hidden;
+  margin-right: 30px;
+  text-overflow: ellipsis;
+}
+
+.link-editor .link-input a:hover {
+  text-decoration: underline;
+}
+
+.link-editor .button {
+  width: 20px;
+  height: 20px;
+  display: inline-block;
+  padding: 6px;
+  border-radius: 8px;
+  cursor: pointer;
+  margin: 0 2px;
+}
+
+.link-editor .button.active,
+.link-editor .button:hover {
+  background-color: rgba(223, 232, 250, 0.3);
+}
+
+.link-editor .button i,
+.actions i {
+  background-size: contain;
+  display: inline-block;
+  height: 20px;
+  width: 20px;
+  vertical-align: -0.25em;
+}
+
+
+.editor-list-ul {
+    list-style-type: disc;
+    padding-left: 30px;
+    margin: 8px 0;
+}
+
+.editor-list-ol {
+    list-style-type: decimal;
+    padding-left: 30px;
+    margin: 8px 0;
+}
+
+.editor-listitem {
+    margin-bottom: 4px;
+    padding-left: 8px;
+}
+
+/* Ensure nested lists have proper indentation and styling */
+.editor-list-ul .editor-list-ul,
+.editor-list-ol .editor-list-ol {
+    margin-left: 20px;
+}
+
+/* Nested list item styles */
+.editor-nested-listitem {
+    list-style-type: circle; /* For nested unordered lists */
+}
+
+/* Checklist specific styles */
+.editor-checklist {
+    list-style: none;
+    padding-left: 30px;
+}
+
+.editor-checklist .editor-listitem {
+    position: relative;
+    padding-left: 25px;
+}
+
+.editor-checklist .editor-listitem::before {
+    content: '☐';
+    position: absolute;
+    left: 0;
+    top: 0;
+}
+
+.editor-checklist .editor-listitem.checked::before {
+    content: '☑';
+}
+
+/* Add these styles for links in the editor */
+.editor-input a {
+    color: #0066cc;
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+.editor-input a:hover {
+    color: #004499;
+    text-decoration: none;
+}
+
+.editor-input a:visited {
+    color: #551A8B;
+}
+
+/* Style for the link editor */
+.link-editor {
+    position: absolute;
+    z-index: 100;
+    top: -10000px;
+    left: -10000px;
+    margin-top: -6px;
+    max-width: 300px;
+    width: 100%;
+    opacity: 0;
+    background-color: #fff;
+    box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.3);
+    border-radius: 4px;
+    transition: opacity 0.5s;
+    padding: 8px;
+}
+
+.link-editor.active {
+    opacity: 1;
+    top: 0;
+    left: 0;
+}
+
+.link-input {
+    display: block;
+    width: 100%;
+    box-sizing: border-box;
+    margin: 8px 0;
+    padding: 6px 12px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.link-editor button {
+    margin-right: 8px;
+    padding: 4px 8px;
+    background-color: #eee;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.link-editor button:hover {
+    background-color: #ddd;
+}
