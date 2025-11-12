@@ -6,6 +6,8 @@ import { JobCardType } from '@/@/lib/types/jobs/job-list'
 import { getRequest } from '@/@/service/api-handler/get-manager'
 import { Suspense } from 'react'
 
+export const dynamic = 'force-dynamic'
+
 
 export default function JobsLandingPage() {
     return (

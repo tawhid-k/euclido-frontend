@@ -3,6 +3,18 @@ import { getXsrfToken } from "./get-token";
 const base_url = process.env.NEXT_PUBLIC_BASE_URL;
 const ONE_HOUR = 3600;
 
+function resolveFullUrl(input: string): string {
+    if (/^https?:\/\//i.test(input)) return input;
+    const fallback = process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : '';
+    const base = base_url || fallback;
+    if (!base) {
+        throw new Error('Base URL is not configured. Set NEXT_PUBLIC_BASE_URL or VERCEL_URL.');
+    }
+    const baseClean = base.replace(/\/+$/, '');
+    const pathClean = input.replace(/^\/+/, '');
+    return `${baseClean}/${pathClean}`;
+}
+
 interface ErrorResponse {
     statusCode: number;
     message: string;
@@ -50,7 +62,7 @@ export async function getRequestWithToken(url: string, cache = false) {
             message: 'unauthorized'
         };
     }
-    const fullUrl = new URL(url, base_url).toString();
+    const fullUrl = resolveFullUrl(url);
     return fetchWithHandling(fullUrl, {
         method: 'GET',
         headers: {
@@ -61,7 +73,7 @@ export async function getRequestWithToken(url: string, cache = false) {
 }
 
 export async function getRequest(url: string, cache = false) {
-    const fullUrl = new URL(url, base_url).toString();
+    const fullUrl = resolveFullUrl(url);
     return fetchWithHandling(fullUrl, {
         method: 'GET',
         headers: {

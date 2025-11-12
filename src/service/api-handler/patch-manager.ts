@@ -3,6 +3,18 @@ import { getXsrfToken } from "./get-token";
 
 const base_url = process.env.NEXT_PUBLIC_BASE_URL
 
+function resolveFullUrl(input: string): string {
+    if (/^https?:\/\//i.test(input)) return input;
+    const fallback = process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : '';
+    const base = base_url || fallback;
+    if (!base) {
+        throw new Error('Base URL is not configured. Set NEXT_PUBLIC_BASE_URL or VERCEL_URL.');
+    }
+    const baseClean = base.replace(/\/+$/, '');
+    const pathClean = input.replace(/^\/+/, '');
+    return `${baseClean}/${pathClean}`;
+}
+
 export async function patchRequest(url : string, formData : any) {
  
     try {
@@ -13,7 +25,7 @@ export async function patchRequest(url : string, formData : any) {
                 message: 'unauthorized'
             }
         }
-        const response = await axios.patch(`${base_url}/${url}`, formData, {
+        const response = await axios.patch(resolveFullUrl(url), formData, {
             headers: {
                 'x-xsrf-token': token,
                 'Content-Type': 'application/json'
@@ -68,10 +80,9 @@ export async function patchFormDataRequest(url: string, formData: FormData) {
         }
         
         // For FormData, don't set Content-Type - browser will set it automatically
-        const response = await axios.patch(`${base_url}/${url}`, formData, {
+        const response = await axios.patch(resolveFullUrl(url), formData, {
             headers: {
                 'x-xsrf-token': token,
-                // No Content-Type header here - let the browser set it
             }, 
             withCredentials: true
         });

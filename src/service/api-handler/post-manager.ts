@@ -3,6 +3,18 @@ import { getXsrfToken } from "./get-token";
 
 const base_url = process.env.NEXT_PUBLIC_BASE_URL
 
+function resolveFullUrl(input: string): string {
+    if (/^https?:\/\//i.test(input)) return input;
+    const fallback = process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : '';
+    const base = base_url || fallback;
+    if (!base) {
+        throw new Error('Base URL is not configured. Set NEXT_PUBLIC_BASE_URL or VERCEL_URL.');
+    }
+    const baseClean = base.replace(/\/+$/, '');
+    const pathClean = input.replace(/^\/+/, '');
+    return `${baseClean}/${pathClean}`;
+}
+
 export async function postRequest(url: string, formData: any) {
     try {
         const token = await getXsrfToken();
@@ -13,7 +25,7 @@ export async function postRequest(url: string, formData: any) {
                 message: 'unauthorized'
             }
         }
-        const response = await fetch(`${base_url}/${url}`, {
+        const response = await fetch(resolveFullUrl(url), {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -55,7 +67,7 @@ export async function postRequest(url: string, formData: any) {
 
 export default async function postManager(url : string, formData : any) {
     try {
-        const response = await axios.post(`${base_url}/${url}`, formData, {
+        const response = await axios.post(resolveFullUrl(url), formData, {
             withCredentials: true
         });
         if (response.data.statusCode === 200 || response.data.statusCode === 201) {
@@ -97,11 +109,10 @@ export async function postRequestForm(url: string, formData: FormData) {
                 message: 'unauthorized'
             }
         }
-        const response = await fetch(`${base_url}/${url}`, {
+        const response = await fetch(resolveFullUrl(url), {
             method: 'POST',
             headers: {
                 'x-xsrf-token': token,
-                
             },
             credentials: 'include',
             body: formData,

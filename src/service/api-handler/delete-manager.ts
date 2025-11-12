@@ -7,6 +7,18 @@ interface ErrorResponse {
     message: string;
 }
 
+function resolveFullUrl(input: string): string {
+    if (/^https?:\/\//i.test(input)) return input;
+    const fallback = process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : '';
+    const base = base_url || fallback;
+    if (!base) {
+        throw new Error('Base URL is not configured. Set NEXT_PUBLIC_BASE_URL or VERCEL_URL.');
+    }
+    const baseClean = base.replace(/\/+$/, '');
+    const pathClean = input.replace(/^\/+/, '');
+    return `${baseClean}/${pathClean}`;
+}
+
 async function fetchWithHandling(url: string, options: RequestInit) {
     try {
         const response = await fetch(url, {
@@ -59,7 +71,7 @@ export async function deleteRequestWithToken(url: string) {
             message: 'unauthorized'
         };
     }
-    const fullUrl = new URL(url, base_url).toString();
+    const fullUrl = resolveFullUrl(url);
     return fetchWithHandling(fullUrl, {
         method: 'DELETE',
         headers: {
@@ -70,7 +82,7 @@ export async function deleteRequestWithToken(url: string) {
 }
 
 export async function deleteRequest(url: string) {
-    const fullUrl = new URL(url, base_url).toString();
+    const fullUrl = resolveFullUrl(url);
     return fetchWithHandling(fullUrl, {
         method: 'DELETE',
         headers: {
