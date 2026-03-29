@@ -1,7 +1,7 @@
 'use client'
 
 import { debounce } from 'lodash'
-import { useCallback, useState, useRef, useEffect } from 'react'
+import { useCallback, useMemo, useState, useRef, useEffect } from 'react'
 import {
     useDisciplineStore,
     useprogramTitleStore
@@ -78,8 +78,8 @@ export function SearchDisciplines() {
         [setProgramTitle]
     )
 
-    const debouncedFetch = useCallback(
-        debounce((term: string) => fetchSuggestions(term), 300),
+    const debouncedFetch = useMemo(
+        () => debounce((term: string) => fetchSuggestions(term), 300),
         [fetchSuggestions]
     )
 

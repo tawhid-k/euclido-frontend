@@ -5,7 +5,7 @@ import postManager from "../service/api-handler/post-manager";
 
 
 export async function userExist(email : string) {
-    const response = await getRequest(`user/existance/${email}`)
+    const response = await getRequest(`user/existance/${email}`) as { statusCode: number }
 
     return response.statusCode === 200
 }

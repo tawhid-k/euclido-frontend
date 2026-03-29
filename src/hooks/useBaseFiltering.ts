@@ -1,6 +1,6 @@
 'use client'
 
-import { useMemo } from 'react'
+import { useMemo, useCallback } from 'react'
 import { getRequest } from '@/@/service/api-handler/get-manager'
 import useSWR from 'swr'
 import { formatMinMaxParam, formatQueryParam } from '../utils/filtering'
@@ -21,10 +21,10 @@ export function useBaseFiltering(config: FilterConfig) {
     const { getSelectedValues } = useUrlParams()
     
     // Convert the getSelectedValues to a format compatible with formatQueryParam
-    const getParams = (key: string) => {
+    const getParams = useCallback((key: string) => {
         const values = getSelectedValues(key)
         return values.size > 0 ? Array.from(values).join('+') : null
-    }
+    }, [getSelectedValues])
     
     const filterParams = useMemo(() => {
         const params: Record<string, string> = {}
