@@ -14,7 +14,7 @@ function makeBookmarkedProgram(id: number, userId: number, programIdx: number): 
         uuid: `bkp-${String(id).padStart(4, '0')}`,
         createdAt: ts, updatedAt: tsUpdated, deletedAt: null,
         program: {
-            ...prog,
+            ...(prog as any),
             deletedAt: null,
             isBookmarked: true,
             university: { ...prog.university, deletedAt: null, livingCost: { ...prog.university.livingCost, deletedAt: null } } as any

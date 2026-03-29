@@ -50,8 +50,8 @@ function makeJob(id: number, title: string, position: string, desc: string, req:
         isActive, isDraft, recruiterId: 100,
         isBookmarked: false,
         university: uni as any,
-        discipline: disc,
-        subDiscipline: subDisc,
+        discipline: disc as any,
+        subDiscipline: subDisc as any,
         recruiter: mockRecruiter,
         applicants: applicantNames.map(([fn, ln], i) => makeApplicant(id * 10 + i, id, fn, ln))
     }

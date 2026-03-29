@@ -139,9 +139,19 @@ function filterJobs(urlStr: string) {
     return { statusCode: 200, message: 'Success', ...paginate(results, page, limit) }
 }
 
+// ─── API response type ───────────────────────────────────────────────────────
+
+export interface ApiResponse {
+    statusCode: number
+    message: string
+    result?: any
+    meta?: any
+    links?: any
+}
+
 // ─── Main URL resolver ────────────────────────────────────────────────────────
 
-export function mockApiGet(url: string): unknown {
+export function mockApiGet(url: string): ApiResponse {
     // Strip base URL if present
     const path = url.replace(/^https?:\/\/[^/]+\//, '')
 
@@ -212,15 +222,15 @@ export function mockApiGet(url: string): unknown {
     return { statusCode: 200, message: 'Success', result: [] }
 }
 
-export function mockApiPost(_url: string, _body: unknown): unknown {
+export function mockApiPost(_url: string, _body: unknown): ApiResponse {
     return { statusCode: 201, message: 'Success' }
 }
 
-export function mockApiPatch(_url: string, _body: unknown): unknown {
+export function mockApiPatch(_url: string, _body: unknown): ApiResponse {
     return { statusCode: 200, message: 'Updated successfully' }
 }
 
-export function mockApiDelete(_url: string): unknown {
+export function mockApiDelete(_url: string): ApiResponse {
     return { statusCode: 200, message: 'Deleted successfully' }
 }
 
