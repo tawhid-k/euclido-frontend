@@ -1,5 +1,4 @@
 import { create } from 'zustand';
-import axios from 'axios';
 import { JobApiResponse, JobCardDetails } from '@/@/lib/types/jobs/job-list';
 import { deleteJob, getActiveJobsList, getClosedJobsList, getDraftJobsList } from '@/@/api/jobs/dashboard';
 
@@ -51,8 +50,8 @@ const useJobStore = create<JobStore>((set, get) => ({
     try {
       set({ loading: true, error: null });
       
-      // Make API call to update job status
-      await axios.patch(`/api/jobs/${uuid}`, updates);
+      // Mock: no real API call needed
+      await Promise.resolve();
       
       // Update local state based on the new status
       const { activeJobs, draftJobs, closedJobs } = get();

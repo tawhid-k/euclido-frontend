@@ -7,7 +7,7 @@ export default function useNavbar() {
     const authState = useAppSelector((state) => state.auth)
     const [scrolled, setScrolled] = useState(false)
     const user = authState.user
-    const loading = authState.status === 'loading' || authState.status === 'idle'
+    const loading = authState.status === 'loading'
     const pathname = usePathname()
     useEffect(() => {
             

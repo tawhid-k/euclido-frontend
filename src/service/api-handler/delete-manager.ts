@@ -1,101 +1,13 @@
-import { getXsrfToken } from "./get-token";
-
-const base_url = process.env.NEXT_PUBLIC_BASE_URL;
-
-interface ErrorResponse {
-    statusCode: number;
-    message: string;
-}
-
-function resolveFullUrl(input: string): string {
-    if (/^https?:\/\//i.test(input)) return input;
-    const fallback = process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : '';
-    const base = base_url || fallback;
-    if (!base) {
-        throw new Error('Base URL is not configured. Set NEXT_PUBLIC_BASE_URL or VERCEL_URL.');
-    }
-    const baseClean = base.replace(/\/+$/, '');
-    const pathClean = input.replace(/^\/+/, '');
-    return `${baseClean}/${pathClean}`;
-}
-
-async function fetchWithHandling(url: string, options: RequestInit) {
-    try {
-        const response = await fetch(url, {
-            ...options,
-            credentials: 'include',
-            cache: 'no-store'
-        });
-        
-        // For DELETE operations, the response might be empty
-        const contentType = response.headers.get('content-type');
-        let data;
-        
-        if (contentType && contentType.includes('application/json')) {
-            data = await response.json();
-        } else {
-            data = { message: 'Operation completed successfully' };
-        }
-
-        if (response.status === 200 || response.status === 204) {
-            return data;
-        } else if (response.status === 400) {
-            return {
-                statusCode: 400,
-                message: data.message || 'Bad request'
-            } as ErrorResponse;
-        } else {
-            throw new Error(data.message || 'Something went wrong');
-        }
-    } catch (error: any) {
-        if (error instanceof TypeError && error.message === 'Failed to fetch') {
-            return {
-                statusCode: 500,
-                message: 'No response received from server'
-            } as ErrorResponse;
-        }
-
-        return {
-            statusCode: 500,
-            message: error.message || 'Something went wrong'
-        } as ErrorResponse;
-    }
-}
+import { mockApiDelete } from '@/@/lib/mock-data'
 
 export async function deleteRequestWithToken(url: string) {
-    console.log(url)
-    const token = await getXsrfToken();
-    if (!token) {
-        return {
-            statusCode: 401,
-            message: 'unauthorized'
-        };
-    }
-    const fullUrl = resolveFullUrl(url);
-    return fetchWithHandling(fullUrl, {
-        method: 'DELETE',
-        headers: {
-            'x-xsrf-token': token,
-            'Content-Type': 'application/json',
-        }
-    });
+    return mockApiDelete(url)
 }
 
 export async function deleteRequest(url: string) {
-    const fullUrl = resolveFullUrl(url);
-    return fetchWithHandling(fullUrl, {
-        method: 'DELETE',
-        headers: {
-            'Content-Type': 'application/json',
-        }
-    });
+    return mockApiDelete(url)
 }
 
 export async function deleteRequestUrl(url: string) {
-    return fetchWithHandling(url, {
-        method: 'DELETE',
-        headers: {
-            'Content-Type': 'application/json',
-        }
-    });
+    return mockApiDelete(url)
 }

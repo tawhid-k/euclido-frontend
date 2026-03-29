@@ -6,8 +6,6 @@ import { useAppDispatch } from '@/@/app/store/hooks'
 import toast from 'react-hot-toast'
 import { useRouter } from 'next/navigation'
 import { Button } from '@heroui/button'
-import axios from 'axios'
-import { Alert } from '@heroui/react'
 import { setUser } from '@/@/app/store/authSlice'
 import { setAuthCookies } from '@/@/api/auth'
 import { useState } from 'react'
@@ -35,45 +33,12 @@ export default function LoginForm() {
         resolver: zodResolver(loginSchema)
     })
 
-    const onSubmit = async (data: LoginFormData) => {
+    const onSubmit = async (_data: LoginFormData) => {
         setIsLoading(true)
         try {
-            const response = await axios.post(`${base_url}/auth/login`, data, {
-                withCredentials: true
-            })
-            if (response.status === 200 || response.status === 201) {
-                const result = response.data.result
-                const user = {
-                    uuid: result.uuid,
-                    firstName: result.firstName,
-                    lastName: result.lastName,
-                    email: result.email,
-                    userType: result.userType,
-                    avatarPath: result.avatarPath
-                }
-                if (!result.isEmailVerified) {
-                    localStorage.setItem('register-email', result.email)
-                }
-                await setAuthCookies(result.userType, result.isEmailVerified)
-                dispatch(setUser(user))
-          
-                if (user.userType === 'student') {
-                    router.push('/')
-                } else if (user.userType === 'recruiter') {
-                    router.push('/jobs/dashboard')
-                }
-            } else {
-                console.log('Login failed')
-            }
-        } catch (error) {
-            toast.custom(
-                <Alert
-                    color="warning"
-                    variant="faded"
-                    title="Invalid credential"
-                    description="Incorrect email / password"
-                />
-            )
+            // Mock: auto sign in as Alex Johnson
+            dispatch(setUser({ uuid: 'user-0001-0000-0000-000000000001', firstName: 'Alex', lastName: 'Johnson', email: 'alex@euclido.com', userType: 'student', avatarPath: '/prof.png' }))
+            router.push('/')
         } finally {
             setIsLoading(false)
         }

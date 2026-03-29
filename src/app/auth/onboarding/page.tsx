@@ -9,9 +9,8 @@ import Specialization from './components/questions/specialization'
 import ResearchInterest from './components/questions/research-interest'
 import toast from 'react-hot-toast'
 import { redirect, useRouter } from 'next/navigation'
-import axios from 'axios'
 
-const base_url = process.env.NEXT_PUBLIC_BASE_URL
+
 
 function OnBoardingForm({
     step,
@@ -53,24 +52,10 @@ function OnBoardingForm({
 
         try {
             setLoading(true)
-            const response = await axios.post(
-                `${base_url}/auth/registration`,
-                formattedData,
-                {
-                    withCredentials: true
-                }
-            )
-            // console.log(response)
-            if (response.status === 201) {
-                toast.success(response.data.message)
-                localStorage.setItem(
-                    'register-email',
-                    response.data.result.email
-                )
-                router.push('/auth/code-verification')
-            } else {
-                toast.error(response.data.message)
-            }
+            // Mock: simulate successful registration
+            toast.success('Registration successful! (Mock mode)')
+            localStorage.setItem('register-email', formattedData.email)
+            router.push('/auth/code-verification')
         } catch (error) {
             console.log(error)
         } finally {

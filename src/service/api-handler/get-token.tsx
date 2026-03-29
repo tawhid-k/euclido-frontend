@@ -1,19 +1,17 @@
 'use server'
-import { cookies } from 'next/headers'
 
 export async function hasXsrfToken() {
-    const hasCookie = (await cookies()).has('XSRF-TOKEN')
-    return hasCookie
+    return true
 }
 
 export async function getXsrfToken() {
-    return (await cookies()).get('XSRF-TOKEN')?.value
+    return 'mock-xsrf-token'
 }
 
 export async function googleToken() {
-    return (await cookies()).get('google-signin-token')?.value
+    return undefined
 }
 
 export async function removeGoogleToken() {
-    ;(await cookies()).delete('google-signin-token')
+    // no-op in mock mode
 }

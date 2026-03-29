@@ -311,9 +311,10 @@ export default function Modal(props: { program: BasicProgramInfo }) {
             </div>
         )
     } else if (!isLoading && data) {
+        const dataArray = Array.isArray(data) ? data : []
         const filteredSupervisorsLength = filteredSupervisors.length
         const supervisorsToRender =
-            filteredSupervisorsLength > 0 ? filteredSupervisors : data
+            filteredSupervisorsLength > 0 ? filteredSupervisors : dataArray
 
         return (
             <div>
@@ -339,13 +340,13 @@ export default function Modal(props: { program: BasicProgramInfo }) {
                         </div>
                     </div>
                     <SearchBar
-                        supervisors={data}
+                        supervisors={dataArray}
                         onFilteredResults={handleFilteredResults}
                     />
                 </div>
                 <p className="text-foreground text-sm px-8 py-4">{`Total ${
                     filteredSupervisorsLength === 0
-                        ? data.length
+                        ? dataArray.length
                         : filteredSupervisorsLength
                 } supervisors found`}</p>
 

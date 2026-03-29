@@ -51,10 +51,13 @@ function SecondRow(props: { p: ProgramT }) {
         },
         {
             label: 'Application Fee',
-            value: `${props.p.applicationFees[0].currency.symbol} ${Math.ceil(
-                props.p.applicationFees[0].applicationFeeInUsd *
-                    props.p.applicationFees[0].currency.conversionRate
-            )}`
+            value:
+                props.p.applicationFees?.[0]?.currency
+                    ? `${props.p.applicationFees[0].currency.symbol} ${Math.ceil(
+                          props.p.applicationFees[0].applicationFeeInUsd *
+                              props.p.applicationFees[0].currency.conversionRate
+                      )}`
+                    : 'N/A'
         }
     ]
     return <DegreeListProgramBasicInformationFormat items={programInfo} />

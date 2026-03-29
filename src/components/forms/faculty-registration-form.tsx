@@ -1,17 +1,9 @@
 import { Button } from '@heroui/button'
-import Link from 'next/link'
 import React, { useState, useEffect } from 'react'
 import { z } from 'zod'
 import { getUniversityList } from '@/@/api/common'
-import axios from 'axios';
 import { useRouter } from 'next/navigation'
 import toast from 'react-hot-toast'
-import ToastWithButton from '../global/toast-alert'
-import { setAuthCookies } from '@/@/api/auth'
-import { useAppDispatch } from '@/@/app/store/hooks'
-import { setUser } from '@/@/app/store/authSlice'
-
-const base_url = process.env.NEXT_PUBLIC_BASE_URL
 
 const registrationSchema = z.object({
     userType: z.enum(['Individual', 'Organization']),
@@ -30,27 +22,12 @@ const registrationSchema = z.object({
 
 type RegistrationForm = z.infer<typeof registrationSchema>
 
-interface RegistrationSubmission {
-    email: string;
-    firstName: string;
-    lastName: string;
-    password: string;
-    confirmPassword: string;
-    authProvider: string;
-    avatarPath: string;
-    universityUuid: string;
-    designation: string;
-    recruiterType: string;
-    isFacultyMember: boolean;
-}
-
 interface FacultyRegistrationFormProps {
     registerType: 'individual' | 'organization';
 }
 
 
 const FacultyRegistrationForm = ({ registerType }: FacultyRegistrationFormProps) => {
-    const dispatch = useAppDispatch()
     const router = useRouter()
     const [universities, setUniversities] = useState<Array<{name: string, uuid: string}>>([]);
     const [isLoading, setIsLoading] = useState(false);
@@ -101,74 +78,10 @@ const FacultyRegistrationForm = ({ registerType }: FacultyRegistrationFormProps)
         setIsLoading(true);
 
         try {
-            const validatedData = registrationSchema.parse(formData)
-            const submissionData: RegistrationSubmission = {
-                email: validatedData.email,
-                firstName: validatedData.firstName,
-                lastName: validatedData.lastName,
-                password: validatedData.password,
-                confirmPassword: validatedData.confirmPassword,
-                authProvider: '',
-                avatarPath: '',
-                universityUuid: validatedData.universityUuid,
-                designation: validatedData.designation,
-                recruiterType: registerType,
-                isFacultyMember: validatedData.designation === 'Faculty'
-            }
-            
-            try {
-                const response = await axios.post(`${base_url}/auth/registration/recruiter`, submissionData, {
-                    withCredentials: true
-                })
-                if (response.status === 200 || response.status === 201) {
-                    const result = response.data.result
-                    
-                    const user = {
-                        uuid: result.uuid,
-                        firstName: result.firstName,
-                        lastName: result.lastName,
-                        email: result.email,
-                        userType: result.userType,
-                        avatarPath: result.avatarPath
-                    }
-                    if (!result.isEmailVerified) {
-                        localStorage.setItem('register-email', result.email)
-                    }
-                    await setAuthCookies(result.userType, result.isEmailVerified)
-                    dispatch(setUser(user))
-                    if (user.userType === 'student') {
-                        router.push('/')
-                    } else if (user.userType === 'recruiter') {
-                        router.push('/jobs/dashboard')
-                    }
-                    if (!result.isEmailVerified) {
-                        localStorage.setItem('register-email', result.email)
-                    }
-                    router.push('/auth/code-verification')
-                } else {
-                    console.log('Login failed')
-                    toast.custom(
-                        <ToastWithButton
-                            title={response.data.message}
-                            description="You already have an account. Please sign in."
-                            linkPath="/auth/signin"
-                            linkLabel="Reset Password"
-                        />
-                    )
-                    setIsLoading(false);
-                }
-            } catch (error) {
-                toast.custom(
-                    <ToastWithButton
-                        title="User already exist"
-                        description="You already have an account. Please sign in."
-                        linkPath="/auth/signin"
-                        linkLabel="Signin"
-                    />
-                )
-                console.log(error)
-                setIsLoading(false);
-            }
+            registrationSchema.parse(formData)
+            // Mock: simulate successful recruiter registration
+            toast.success('Registration successful! (Mock mode)')
+            router.push('/auth/code-verification')
         } catch (error) {
             if (error instanceof z.ZodError) {
                 const formErrors: Record<string, string> = {}
